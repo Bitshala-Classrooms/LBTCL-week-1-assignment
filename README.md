@@ -1,7 +1,12 @@
 # Learning Bitcoin from the Command Line - Week 1: Setting up and interacting with a Bitcoin Node
 
 ## Overview
-This week, you'll learn how to install Bitcoin Core and use Bitcoin CLI (`bitcoin-cli`) to interact with a running Bitcoin node.
+
+In this first week you will:
+
+1. **Set up** Bitcoin Core from scratch (Bash only).
+2. **Interact** with the running node on `regtest` through RPC calls. You may write the interaction code in **Bash, Python, JavaScript (Node.js) _or_ Rust**.
+3. **Output** a small report (`out.txt`) that demonstrates you can create wallets, send a transaction, and mine a confirming block.
 
 ## Problem Statement
 
@@ -15,13 +20,13 @@ We will not have to do IBD, because we will be using `regtest` where we can crea
 
 You need to write a bash script that will do the following:
 
-### Setup
-- Download the latest Bitcoin Core binaries from Bitcoin Core Org https://bitcoincore.org/.
-- Use the downloaded hashes and signature to verify that binary is right. Print a message to terminal "Binary signature verification successful".
-- Copy the downloaded binaries to `/usr/local/bin/` for folder.
+### Setup - Bash only
 
-### Start Bitcoin Node
-- Create a `bitcoin.conf` file in the `~/.bitcoin/` data directory. Create the directory if it doesn't exist. And add the following lines to the file.
+Write Bash code in `setup.sh` that
+
+- Download the latest Bitcoin Core binaries from Bitcoin Core Org https://bitcoincore.org/.
+- Copy the downloaded binaries to `/usr/local/bin/` for folder.
+- Create `~/.bitcoin/bitcoin.conf` (make the directory if needed) with:
   ```
   regtest=1
   fallbackfee=0.0001
@@ -31,14 +36,19 @@ You need to write a bash script that will do the following:
   rpcauth=alice:88cae77e34048eff8b9f0be35527dd91$d5c4e7ff4dfe771808e9c00a1393b90d498f54dcab0ee74a2d77bd01230cd4cc
   ```
   Make sure that you escape the `$` sign in the `rpcauth` line.
-- start `bitcoind`.
-- create two wallet named `Miner` and `Trader`. The names are case-sensitive and should be exact.
+- Start `bitcoind`.
+
+### Node Interaction - Choose ONE Language
+
+Implement the remaining tasks in exactly one of the language-specific directories: `bash`, `javascript`, `python`, or `rust`.
+
+Your program must:
+
+- Create two wallet named `Miner` and `Trader`. The names are case-sensitive and should be exact.
 - Generate one address from the `Miner` wallet with a label "Mining Reward".
 - Mine new blocks to this address until you get positive wallet balance. (use `generatetoaddress`) (observe many blocks it took to get to a positive balance)
 - Write a short comment describing why wallet balance for block rewards behaves that way.
 - Print the balance of the `Miner` wallet.
-
-### Usage
 - Create a receiving addressed labeled "Received" from `Trader` wallet.
 - Send a transaction paying 20 BTC from `Miner` wallet to `Trader`'s wallet.
 - Fetch the unconfirmed transaction from the node's mempool and print the result. (hint: `bitcoin-cli help` to find list of all commands, look for `getmempoolentry`).
@@ -77,28 +87,36 @@ You need to write a bash script that will do the following:
 
 - To download the latest binaries for linux x86-64, via command line: `wget https://bitcoincore.org/bin/bitcoin-core-27.1/bitcoin-27.1-x86_64-linux-gnu.tar.gz`
 - Search up in google for terminal commands for a specific task, if you don't have them handy. Ex: "how to extract a zip folder via linux terminal", "how to copy files into another directory via linux terminal", etc.
-- Use `jq` tool to fetch specific data from `json` objects returned by `bitcoin-cli`.
 
 ## Local Testing
 
 ### Prerequisites
+
+| Language       | Prerequisite packages       |
+| -------------- |-----------------------------|
+| **Bash**       | `jq`, `curl`, `wget`, `tar` |
+| **JavaScript** | Node.js ≥ 20, `npm`         |
+| **Python**     | Python ≥ 3.9                |
+| **Rust**       | Rust stable toolchain       |
+
+
 - Install `jq` tool for parsing JSON data if you don't have it installed.
 - Install Node.js and npm to run the test script.
 - Node version 20 or higher is recommended. You can install Node.js using the following command:
   ```
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
   source ~/.nvm/nvm.sh
-  nvm install 20
+  nvm install --lts
   ```
 - Install the required npm packages by running `npm install`.
 
 ### Testing Steps
-- Run your script using the command `/bin/bash solution.sh`.
-- Run the test script using the command `npm run test`.
+- Grant execution permission to `test.sh`, by running `chmod +x ./test.sh`.
+- Execute `./test.sh`.
 - The test script will run your script and verify the output. If the test script passes, you have successfully completed the challenge and are ready to submit your solution.
 
 ### Common Issues
-- Make sure Bitcoin Core is running before running the test script. Your submission should not stop the Bitcoin Core daemon at any point.
+- Your submission should not stop the Bitcoin Core daemon at any point.
 - Make sure your `bitcoin.conf` file is correctly configured with the required parameters.
 - Linux and MacOS are the recommended operating systems for this challenge. If you are using Windows, you may face compatibility issues.
 - The autograder will run the test script on an Ubuntu 22.04 environment. Make sure your script is compatible with this environment.
@@ -107,21 +125,27 @@ You need to write a bash script that will do the following:
 
 ## Submission
 
-- Write your solution in `solution.sh`. Make sure to include comments explaining each step of your code.
-- Commit your changes and push to the main branch:
-  - Add your changes by running `git add solution.sh`.
-  - Commit the changes by running `git commit -m "Solution"`.
-  - Push the changes by running `git push origin main`.
+- Commit all code inside the appropriate language directory and the modified `run.sh`.
+  ```
+  git add .
+  git commit -m "Week 1 solution"
+  ```
+- Push to the main branch:
+  ```
+    git push origin main
+  ```
 - The autograder will run your script against a test script to verify the functionality.
 - Check the status of the autograder on the Github Classroom portal to see if it passed successfully or failed. Once you pass the autograder with a score of 100, you have successfully completed the challenge.
-- You can submit multiple times before the deadline. The last submission before the deadline will be considered your final submission.
+- You can submit multiple times before the deadline. The latest submission before the deadline will be considered your final submission.
 - You will lose access to the repository after the deadline.
 
 ## Evaluation Criteria
-Your submission will be evaluated based on:
-- **Autograder**: Your code must pass the autograder [test script](./test/test.spec.ts).
-- **Explainer Comments**: Include comments explaining each step of your code.
-- **Code Quality**: Your code should be well-organized, commented, and adhere to best practices.
+
+| Area                   | Weight      | Description                                                                                                                         |
+| ---------------------- | ----------- |-------------------------------------------------------------------------------------------------------------------------------------|
+| **Autograder**         | **Primary** | Your code must pass the autograder [test script](./test/test.spec.ts).                                                                              |
+| **Explainer comments** | Required    | Include comments explaining each step of your code.                                                                                 |
+| **Code quality**       | Required    | Your code should be well-organized, commented, and adhere to best practices like idiomatic style, meaningful names, error handling. |
 
 ### Plagiarism Policy
 Our plagiarism detection checker thoroughly identifies any instances of copying or cheating. Participants are required to publish their solutions in the designated repository, which is private and accessible only to the individual and the administrator. Solutions should not be shared publicly or with peers. In case of plagiarism, both parties involved will be directly disqualified to maintain fairness and integrity.
