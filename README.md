@@ -6,12 +6,17 @@ In this first week you will:
 
 1. **Set up** Bitcoin Core from scratch (Bash only).
 2. **Interact** with the running node on `regtest` through RPC calls. You may write the interaction code in **Bash, Python, JavaScript (Node.js) _or_ Rust**.
-3. **Output** a small report (`out.txt`) that demonstrates you can create wallets, send a transaction, and mine a confirming block.
+3. **Output** a small report file named (`out.txt`) in the current directory, that demonstrates you can create wallets, send a transaction, and mine a confirming block.
+4. **Target Locations** for the solution code for each languages are given below:
+   1. Bash: [solution.sh](./bash/solution.sh)
+   2. Javascript: [index.js](./javascript/index.js)
+   3. Python: [main.py](./python/main.py)
+   4. Rust: [main.rs](./rust/src/main.rs)
 
 ## Problem Statement
 
 The starting steps of any automated node software (Umbrel, MyNode, Raspibltiz etc) is to download the bitcoin binaries, verify signatures, install them in correct locations, provide specific user access, and then start the node.
-The node will then go into IBD (Initial Block Download) phase, where it will download and validate the whole Bitcoin blockchain. Once the IBD completes, it will initiate a wallet and then the user can start transacting Bitcoin with the node (via node UI, or connecting mobile wallets to the node).
+The node will then go into IBD (Initial Block Download) phase, where it will download and validate the whole blockchain. Once the IBD completes, it will initiate a wallet and then the user can start transacting Bitcoin with the node (via node UI, or connecting mobile wallets to the node).
 
 The following exercise is the toy version of the same process via bash script.
 We will not have to do IBD, because we will be using `regtest` where we can create our own toy blocks with toy transactions.
@@ -22,7 +27,7 @@ You need to write a bash script that will do the following:
 
 ### Setup - Bash only
 
-Write Bash code in `setup.sh` that
+Write Bash code in [setup.sh](./setup.sh) that
 
 - Download the latest Bitcoin Core binaries from Bitcoin Core Org https://bitcoincore.org/.
 - Copy the downloaded binaries to `/usr/local/bin/` for folder.
@@ -46,7 +51,7 @@ Your program must:
 
 - Create two wallet named `Miner` and `Trader`. The names are case-sensitive and should be exact.
 - Generate one address from the `Miner` wallet with a label "Mining Reward".
-- Mine new blocks to this address until you get positive wallet balance. (use `generatetoaddress`) (observe many blocks it took to get to a positive balance)
+- Mine new blocks to this address until you get positive wallet balance. (use `generatetoaddress`) (observe how many blocks it took to get to a positive balance)
 - Write a short comment describing why wallet balance for block rewards behaves that way.
 - Print the balance of the `Miner` wallet.
 - Create a receiving addressed labeled "Received" from `Trader` wallet.
@@ -110,8 +115,10 @@ Your program must:
   ```
 - Install the required npm packages by running `npm install`.
 
-### Testing Steps
-- Grant execution permission to `test.sh`, by running `chmod +x ./test.sh`.
+### Local Testing Steps
+It's a good idea to r un the whole test locally to ensure your code is working properly.
+- Uncomment the specific line in [run.sh](./run.sh) corresponding to your language of choice. 
+- Grant execution permission to [test.sh](./test.sh), by running `chmod +x ./test.sh`.
 - Execute `./test.sh`.
 - The test script will run your script and verify the output. If the test script passes, you have successfully completed the challenge and are ready to submit your solution.
 

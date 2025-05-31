@@ -1,0 +1,13 @@
+{
+  "name": "lbtcl-week-1-assignment",
+  "version": "1.0.0",
+  "description": "Week 1 assignment for LBTCL",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "bitcoin-core": "^4.0.0",
+    "fs": "0.0.1-security"
+  }
+}

@@ -9,7 +9,8 @@ npm install
 
 set -e  # Exit immediately if any command fails
 
-# Start the bitcoind
+# Start the setup script and give access to all runners
+chmod +x setup.sh
 /bin/bash setup.sh
 
 chmod +x ./bash/run-bash.sh
@@ -21,3 +22,12 @@ chmod +x ./run.sh
 # Run the test scripts
 /bin/bash run.sh
 npm run test
+
+# Stop the bitcoind
+if pgrep -x "bitcoind" > /dev/null; then
+  echo "Stopping bitcoind..."
+  pkill -x "bitcoind"
+  echo "bitcoind stopped."
+else
+  echo "bitcoind is not running."
+fi
